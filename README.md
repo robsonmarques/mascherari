@@ -14,47 +14,59 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install maskit
+    $ gem install mascherari
 
 ## Usage
 
 To create masks for your attributes, extend Mascherari::AttrMasked to your class and set the format:
 
-    class Person
-      extend Mascherari::AttrMasked
+```ruby
+class Person
+  extend Mascherari::AttrMasked
 
-      attr_masked :phone, :format => "(##) ####-####"
-    end
+  attr_masked :phone, :format => "(##) ####-####"
+end
+```
 
 You can also extend Mascherari::AttrMasked to your Rails models:
 
-    # config/initializers/mascherari.rb
-    ActiveSupport.on_load :active_record do
-      extend Mascherari::AttrMasked
-    end
+```ruby
+# config/initializers/mascherari.rb
+ActiveSupport.on_load :active_record do
+  extend Mascherari::AttrMasked
+end
 
-    # app/models/person.rb
-    class Person < ActiveRecord::Base
-      attr_masked :phone, :format => "(##) ####-####"
-    end
+# app/models/person.rb
+class Person < ActiveRecord::Base
+  attr_masked :phone, :format => "(##) ####-####"
+end
+```
 
 That will give you two methods to use along with your objects:
 
-    person.phone = "555412035"
-    person.phone_masked
-    => (55) 5421-2035
+```ruby
+person.phone = "555412035"
 
-    person.phone = "(55) 5421-2035"
-    person.phone_unmasked
-    => 555412035
+person.phone_masked
+=> "(55) 5421-2035"
+
+person.phone = "(55) 5421-2035"
+
+person.phone_unmasked
+=> "555412035"
+```
 
 You can also use the stand alone formatter to create formats and apply as you want:
 
-    phone_format = Mascherari::Formatter.new :format => "(##) ####-####"
-    phone_format.mask "555412035"
-    => (55) 5421-2035
-    phone_format.unmask "(99) 3343-1205"
-    => 9933431205
+```ruby
+phone_format = Mascherari::Formatter.new :format => "(##) ####-####"
+
+phone_format.mask "555412035"
+=> "(55) 5421-2035"
+
+phone_format.unmask "(99) 3343-1205"
+=> "9933431205"
+```
 
 ## Contributing
 
