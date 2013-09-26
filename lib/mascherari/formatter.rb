@@ -1,10 +1,10 @@
 module Mascherari
   class Formatter
-    attr_reader :format, :wild_card
+    attr_reader :format, :wildcard
 
     def initialize(options = {})
       @format = options.fetch :format
-      @wild_card = options.fetch :wild_card, "#"
+      @wildcard = options.fetch :wildcard, "#"
     end
 
     def mask(value)
@@ -13,7 +13,7 @@ module Mascherari
       value_chars = value.chars
 
       format_chars do |char|
-        wild_card?(char) ? value_chars.shift : char
+        wildcard?(char) ? value_chars.shift : char
       end
     end
 
@@ -21,7 +21,7 @@ module Mascherari
       return value unless formatted? value
 
       format_chars do |char, index|
-        value[index] if wild_card?(char)
+        value[index] if wildcard?(char)
       end
     end
 
@@ -35,8 +35,8 @@ module Mascherari
       value.size == format.size
     end
 
-    def wild_card?(char)
-      char == wild_card
+    def wildcard?(char)
+      char == wildcard
     end
   end
 end
