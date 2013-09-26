@@ -24,6 +24,8 @@ To create masks for your attributes, extend Mascherari::AttrMasked to your class
 class Person
   extend Mascherari::AttrMasked
 
+  attr_accessor :phone
+
   attr_masked :phone, :format => "(##) ####-####"
 end
 ```
@@ -45,13 +47,11 @@ end
 That will give you two methods to use along with your objects:
 
 ```ruby
-person.phone = "555412035"
-
+# person.phone = "555412035"
 person.phone_masked
 => "(55) 5421-2035"
 
-person.phone = "(55) 5421-2035"
-
+# person.phone = "(55) 5421-2035"
 person.phone_unmasked
 => "555412035"
 ```
