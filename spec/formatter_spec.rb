@@ -17,6 +17,13 @@ describe Mascherari::Formatter do
         expect(subject.mask "(12) 3456-7890").to eq "(12) 3456-7890"
       end
     end
+
+    context 'when value size is invalid' do
+      it 'raises an error' do
+        expect { subject.mask "23456789" }.to raise_error "Value size don't match format"
+        expect { subject.mask "91234567890" }.to raise_error "Value size don't match format"
+      end
+    end
   end
 
   describe '#unmask' do
@@ -29,6 +36,13 @@ describe Mascherari::Formatter do
     context 'when value is already unmasked' do
       it 'returns value' do
         expect(subject.unmask "1234567890").to eq "1234567890"
+      end
+    end
+
+    context 'when value size is invalid' do
+      it 'raises an error' do
+        expect { subject.unmask "(23) 456-789" }.to raise_error "Value size don't match format"
+        expect { subject.unmask "(123) 4456-7789" }.to raise_error "Value size don't match format"
       end
     end
   end

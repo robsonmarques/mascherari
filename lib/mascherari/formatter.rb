@@ -8,6 +8,8 @@ module Mascherari
     end
 
     def mask(value)
+      is_valid? value
+
       return value if formatted? value
 
       value_chars = value.chars
@@ -18,6 +20,8 @@ module Mascherari
     end
 
     def unmask(value)
+      is_valid? value
+
       return value unless formatted? value
 
       format_chars do |char, index|
@@ -37,6 +41,12 @@ module Mascherari
 
     def wildcard?(char)
       char == wildcard
+    end
+
+    def is_valid?(value)
+      unless formatted?(value) || value.size == format.scan(wildcard).size
+        raise ArgumentError, "Value size don't match format"
+      end
     end
   end
 end
