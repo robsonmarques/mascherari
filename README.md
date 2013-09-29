@@ -1,6 +1,6 @@
 # Mascherari
 
-An easy way to handle masks.
+An easy way to handle masks. (Work in progress)
 
 ## Installation
 
@@ -56,7 +56,7 @@ person.phone_unmasked
 => "555412035"
 ```
 
-You can also use the stand alone formatter to create formats and apply as you want:
+You can also use the stand alone Formatter to create formats and apply as you want:
 
 ```ruby
 phone_format = Mascherari::Formatter.new :format => "(##) ####-####"
