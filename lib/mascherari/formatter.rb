@@ -7,11 +7,29 @@ module Mascherari
       @wildcard = options.fetch :wildcard, "#"
     end
 
-    def mask(value)
-      is_valid? value
+    def mask(raw_value)
+      prepare_value raw_value
 
-      return value if formatted? value
+      formatted? ? value : add_mask
+    end
 
+    def unmask(raw_value)
+      prepare_value raw_value
+
+      formatted? ? remove_mask : value
+    end
+
+    protected
+
+    attr_reader :value
+
+    def prepare_value(raw_value)
+      @value = raw_value.to_s
+
+      valid_value?
+    end
+
+    def add_mask
       value_chars = value.chars
 
       format_chars do |char|
@@ -19,23 +37,17 @@ module Mascherari
       end
     end
 
-    def unmask(value)
-      is_valid? value
-
-      return value unless formatted? value
-
+    def remove_mask
       format_chars do |char, index|
         value[index] if wildcard?(char)
       end
     end
 
-    protected
-
     def format_chars(&block)
       format.chars.map.with_index { |char, index| yield char, index }.join
     end
 
-    def formatted?(value)
+    def formatted?
       value.size == format.size
     end
 
@@ -43,8 +55,8 @@ module Mascherari
       char == wildcard
     end
 
-    def is_valid?(value)
-      unless formatted?(value) || value.size == format.scan(wildcard).size
+    def valid_value?
+      unless formatted? || value.size == format.scan(wildcard).size
         raise ArgumentError, "Value size don't match format"
       end
     end
