@@ -1,21 +1,23 @@
 module Mascherari
   module AttrMasked
-    def attr_masked(attr, options = {})
-      masked_attributes[attr] = Formatter.new options
+    def attr_masked(*attrs, options)
+      attrs.each do |attr|
+        format = "#{attr}_format"
+        masked = "#{attr}_masked"
+        unmasked = "#{attr}_unmasked"
 
-      class_eval do
-        define_method "#{attr}_masked" do
-          self.class.masked_attributes[attr].mask send(attr)
+        define_method format do
+          @format ||= Formatter.new options
         end
 
-        define_method "#{attr}_unmasked" do
-          self.class.masked_attributes[attr].unmask send(attr)
+        define_method masked do
+          send(format).mask send(attr)
+        end
+
+        define_method unmasked do
+          send(format).unmask send(attr)
         end
       end
-    end
-
-    def masked_attributes
-      @masked_attributes ||= {}
     end
   end
 end
