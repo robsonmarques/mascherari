@@ -46,4 +46,30 @@ describe Mascherari::AttrMasked do
       end
     end
   end
+
+  context 'when attribute value changes' do
+    describe '#attribute_masked' do
+      it 'masks current value' do
+        subject.phone = "1234567890"
+
+        expect(subject.phone_masked).to eq "(12) 3456-7890"
+
+        subject.phone = "0987654321"
+
+        expect(subject.phone_masked).to eq "(09) 8765-4321"
+      end
+    end
+
+    describe '#attribute_unmasked' do
+      it 'unmasks current value' do
+        subject.phone = "(12) 3456-7890"
+
+        expect(subject.phone_unmasked).to eq "1234567890"
+
+        subject.phone = "(09) 8765-4321"
+
+        expect(subject.phone_unmasked).to eq "0987654321"
+      end
+    end
+  end
 end
