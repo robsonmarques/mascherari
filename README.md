@@ -13,7 +13,7 @@ Simple as:
 
 ## Usage
 
-To create masks for your attributes, include Mascherari in your class and set the format:
+To create masks for attributes, include Mascherari and set the format:
 
 ```ruby
 class Person
@@ -29,32 +29,42 @@ That will give you two helpers for each attribute:
 
 ```ruby
 # person.phone = "5554212035"
+# person.mobile = "5599213035"
 person.phone_masked
 => "(55) 5421-2035"
-
-# person.phone = "(55) 5421-2035"
-person.phone_unmasked
-=> "5554212035"
-
-# person.mobile = "5599213035"
 person.mobile_masked
 => "(55) 9921-3035"
 
+# person.phone = "(55) 5421-2035"
 # person.mobile = "(55) 9921-3035"
+person.phone_unmasked
+=> "5554212035"
 person.mobile_unmasked
 => "5599213035"
 ```
 
-You can also use the stand alone Formatter to create formats and apply as you want:
+## Rails
+
+Add this line to your application's Gemfile:
+
+    gem 'mascherari'
+
+And then execute:
+
+    $ bundle
+
+You can include Mascherari in Rails models as:
 
 ```ruby
-phone_format = Mascherari::Formatter.new :format => "(##) ####-####"
+# config/initializers/mascherari.rb
+ActiveSupport.on_load :active_record do
+  include Mascherari
+end
 
-phone_format.mask "555412035"
-=> "(55) 5421-2035"
-
-phone_format.unmask "(99) 3343-1205"
-=> "9933431205"
+# app/models/person.rb
+class Person < ActiveRecord::Base
+  attr_masked :phone, :format => "(##) ####-####"
+end
 ```
 
 ## Contributing
