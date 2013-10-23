@@ -4,56 +4,42 @@ An easy way to handle masks. (Work in progress)
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'mascherari'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Simple as:
 
     $ gem install mascherari
 
 ## Usage
 
-To create masks for your attributes, extend Mascherari::AttrMasked to your class and set the format:
+To create masks for your attributes, include Mascherari in your class and set the format:
 
 ```ruby
 class Person
-  extend Mascherari::AttrMasked
+  include Mascherari
 
-  attr_accessor :phone
+  attr_accessor :phone, :mobile
 
-  attr_masked :phone, :format => "(##) ####-####"
+  attr_masked :phone, :mobile, :format => "(##) ####-####"
 end
 ```
 
-You can also extend Mascherari::AttrMasked to your Rails models:
+That will give you two helpers for each attribute:
 
 ```ruby
-# config/initializers/mascherari.rb
-ActiveSupport.on_load :active_record do
-  extend Mascherari::AttrMasked
-end
-
-# app/models/person.rb
-class Person < ActiveRecord::Base
-  attr_masked :phone, :format => "(##) ####-####"
-end
-```
-
-That will give you two methods to use along with your objects:
-
-```ruby
-# person.phone = "555412035"
+# person.phone = "5554212035"
 person.phone_masked
 => "(55) 5421-2035"
 
 # person.phone = "(55) 5421-2035"
 person.phone_unmasked
-=> "555412035"
+=> "5554212035"
+
+# person.mobile = "5599213035"
+person.mobile_masked
+=> "(55) 9921-3035"
+
+# person.mobile = "(55) 9921-3035"
+person.mobile_unmasked
+=> "5599213035"
 ```
 
 You can also use the stand alone Formatter to create formats and apply as you want:
