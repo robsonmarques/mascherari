@@ -1,5 +1,6 @@
 # Mascherari
 
+[![Gem Version](https://badge.fury.io/rb/mascherari.png)](https://badge.fury.io/rb/mascherari)
 [![Build Status](https://travis-ci.org/robsonmarques/mascherari.png)](https://travis-ci.org/robsonmarques/mascherari)
 [![Code Climate](https://codeclimate.com/github/robsonmarques/mascherari.png)](https://codeclimate.com/github/robsonmarques/mascherari)
 
