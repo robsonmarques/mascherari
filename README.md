@@ -1,6 +1,7 @@
 # Mascherari
 
 [![Build Status](https://travis-ci.org/robsonmarques/mascherari.png)](https://travis-ci.org/robsonmarques/mascherari)
+[![Code Climate](https://codeclimate.com/github/robsonmarques/mascherari.png)](https://codeclimate.com/github/robsonmarques/mascherari)
 
 An easy way to handle masks. (Work in progress)
 
