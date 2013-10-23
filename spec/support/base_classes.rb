@@ -1,5 +1,5 @@
 class Person
-  extend Mascherari::AttrMasked
+  include Mascherari
 
   attr_accessor :phone, :mobile
 
