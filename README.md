@@ -1,5 +1,7 @@
 # Mascherari
 
+[![Build Status](https://travis-ci.org/robsonmarques/mascherari.png)](https://travis-ci.org/robsonmarques/mascherari)
+
 An easy way to handle masks. (Work in progress)
 
 ## Installation
