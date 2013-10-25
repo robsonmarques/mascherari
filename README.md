@@ -20,28 +20,34 @@ To create masks for attributes, include Mascherari and set the format:
 class Person
   include Mascherari
 
-  attr_accessor :phone, :mobile
+  attr_accessor :phone
 
-  attr_masked :phone, :mobile, :format => "(##) ####-####"
+  attr_masked :phone, :format => "(##) ####-####"
 end
 ```
 
-That will give you two helpers for each attribute:
+That will give you two helpers to use along with the object:
 
 ```ruby
 # person.phone = "5554212035"
-# person.mobile = "5599213035"
 person.phone_masked
 => "(55) 5421-2035"
-person.mobile_masked
-=> "(55) 9921-3035"
 
 # person.phone = "(55) 5421-2035"
-# person.mobile = "(55) 9921-3035"
 person.phone_unmasked
 => "5554212035"
-person.mobile_unmasked
-=> "5599213035"
+```
+
+You can set more than one attribute on the same format:
+
+```ruby
+attr_masked :phone, :mobile, :format => "(##) ####-####"
+```
+
+And also use a different wildcard, if needed:
+
+```ruby
+attr_masked :phone, :format => "(**) ****-****", :wildcard => "*"
 ```
 
 ## Rails
