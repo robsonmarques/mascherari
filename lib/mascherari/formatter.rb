@@ -30,25 +30,27 @@ module Mascherari
     end
 
     def add_mask
-      value_chars = value.chars
-
-      format_chars do |char|
-        wildcard?(char) ? value_chars.shift : char
-      end
+      format_sub(wildcard) { |_, index| value[index] }
     end
 
     def remove_mask
-      format_chars do |char, index|
-        value[index] if wildcard?(char)
-      end
+      format_sub { |char, index| value[index] if wildcard?(char) }
     end
 
-    def format_chars(&block)
-      format.chars.map.with_index { |char, index| yield char, index }.join
+    def format_sub(pattern = /./, &block)
+      format.gsub(pattern).each_with_index { |char, index| yield char, index }
+    end
+
+    def format_regexp
+      /\A#{format_sub { |char| format_matcher char }}\z/
+    end
+
+    def format_matcher(char)
+      wildcard?(char) ? '\S' : "\\#{char}"
     end
 
     def formatted?
-      value.size == format.size
+      value =~ format_regexp
     end
 
     def wildcard?(char)
@@ -56,9 +58,9 @@ module Mascherari
     end
 
     def valid_value?
-      unless formatted? || value.size == format.scan(wildcard).size
-        raise ArgumentError, "Value size don't match format"
-      end
+      return true if formatted? || value.size == format.scan(wildcard).size
+
+      raise ArgumentError, "Value size don't match format"
     end
   end
 end
