@@ -72,4 +72,31 @@ describe Mascherari::AttrMasked do
       end
     end
   end
+
+  context 'when have multiple formats' do
+    describe '#attribute_masked' do
+      it 'masks using right format' do
+        subject.account = "1234567"
+
+        expect(subject.account_masked).to eq "12.345-67"
+
+        subject.account = "123456789"
+
+        expect(subject.account_masked).to eq "123.456.789"
+      end
+    end
+
+    describe '#attribute_unmasked' do
+      it 'unmasks using right format' do
+        subject.account = "12.345-67"
+
+        expect(subject.account_unmasked).to eq "1234567"
+
+        subject.account = "123.456.789"
+
+        expect(subject.account_unmasked).to eq "123456789"
+      end
+    end
+
+  end
 end

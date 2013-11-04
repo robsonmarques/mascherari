@@ -1,9 +1,7 @@
 module Mascherari
   class Formatter
-    attr_reader :format, :wildcard
-
     def initialize(options = {})
-      @format = options.fetch :format
+      @format_list = Array(options.fetch :format)
       @wildcard = options.fetch :wildcard, "#"
     end
 
@@ -21,12 +19,14 @@ module Mascherari
 
     protected
 
-    attr_reader :value
+    attr_reader :value, :format, :format_list, :wildcard
 
     def prepare_value(raw_value)
       @value = raw_value.to_s
 
-      valid_value?
+      unless find_format
+        raise ArgumentError, "Value size don't match format"
+      end
     end
 
     def add_mask
@@ -53,14 +53,20 @@ module Mascherari
       value =~ format_regexp
     end
 
+    def wildcard_size?
+      value.size == format.scan(wildcard).size
+    end
+
     def wildcard?(char)
       char == wildcard
     end
 
-    def valid_value?
-      return true if formatted? || value.size == format.scan(wildcard).size
+    def find_format
+      format_for { formatted? } || format_for { wildcard_size? }
+    end
 
-      raise ArgumentError, "Value size don't match format"
+    def format_for(&block)
+      format_list.any? { |format| @format = format; yield }
     end
   end
 end

@@ -38,7 +38,7 @@ person.phone_unmasked
 => "5554212035"
 ```
 
-You can set more than one attribute on the same format:
+You can set a format for more than one attribute:
 
 ```ruby
 attr_masked :phone, :mobile, :format => "(##) ####-####"
@@ -48,6 +48,12 @@ And also use a different wildcard, if needed:
 
 ```ruby
 attr_masked :phone, :format => "(**) ****-****", :wildcard => "*"
+```
+
+For the cases when format can vary, it's possible to set multiple formats:
+
+```ruby
+attr_masked :phone, :format => ["(##) ####-####", "(###) ####-####"]
 ```
 
 ## Rails
